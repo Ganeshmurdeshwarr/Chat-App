@@ -37,7 +37,17 @@ io.on("connection", (socket) => {
 
 // Middleware setup
 app.use(express.json({ limit: "10mb" }));
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // local dev
+      "https://your-frontend-url.vercel.app", // deployed frontend
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
+
 
 // Routes setup
 app.use("/api/status", (req, res) => {
@@ -58,5 +68,4 @@ if(process.env.NODE_ENV !== 'production'){
   });
 }
 
-// Export server for vercel
-export default server;
+export default app;
