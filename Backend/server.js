@@ -41,7 +41,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // local dev
-      "https://chat-app-backend-eta-murex.vercel.app",
+      "https://chat-app-two-blue-90.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -62,8 +62,7 @@ app.use("/api/messages", messageRouter);
 await connectDB();
 
 
-if(process.env.NODE_ENV !== 'process'){
-
+if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
     console.log("Server running on Port:" + PORT);
