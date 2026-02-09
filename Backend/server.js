@@ -41,8 +41,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // local dev
-      "http://localhost:3000", // local dev alternative
-      process.env.FRONTEND_URL, // deployed frontend from environment variable
+      "https://chat-app-backend-eta-murex.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -63,10 +62,12 @@ app.use("/api/messages", messageRouter);
 await connectDB();
 
 
+if(process.env.NODE_ENV !== 'process'){
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log("Server running on Port:" + PORT);
-});
+  const PORT = process.env.PORT || 5000;
+  server.listen(PORT, () => {
+    console.log("Server running on Port:" + PORT);
+  });
+}
 
 export default server;
