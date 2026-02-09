@@ -41,7 +41,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // local dev
-      "https://chat-app-git-main-ganesh-devadigas-projects.vercel.app", // deployed frontend
+      "http://localhost:3000", // local dev alternative
+      process.env.FRONTEND_URL, // deployed frontend from environment variable
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -63,11 +64,9 @@ await connectDB();
 
 
 
-if(process.env.NODE_ENV !== 'production'){
- const PORT = process.env.PORT || 5000;
-  server.listen(PORT, () => {
-    console.log("Server running on Port:" + PORT);
-  });
-}
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log("Server running on Port:" + PORT);
+});
 
 export default server;
