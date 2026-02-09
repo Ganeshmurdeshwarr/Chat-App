@@ -41,12 +41,13 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // local dev
-      "https://chat-app-git-main-ganesh-devadigas-projects.vercel.app/", // deployed frontend
+      "https://chat-app-git-main-ganesh-devadigas-projects.vercel.app", // deployed frontend
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
 );
+
 
 
 // Routes setup
@@ -69,4 +70,4 @@ if(process.env.NODE_ENV !== 'production'){
   });
 }
 
-export default server;
+export default app;
