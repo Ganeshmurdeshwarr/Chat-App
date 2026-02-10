@@ -1,33 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
 import assets from "../assets/assets";
 
-
 const Sidebar = () => {
+  const {
+    users,
+    selectedUser,
+    getUser,
+    setSelectedUser,
+    unseenMessages,
+    setUnseenMessages,
+  } = useContext(ChatContext);
 
- const {
-   users,
-   selectedUser,
-   getUser,
-   setSelectedUser,
-   unseenMessages,
-   setUnseenMessages,
- } = useContext(ChatContext);
+  const { logout, onlineUsers } = useContext(AuthContext);
 
- const { logout, onlineUsers } = useContext(AuthContext);
+  const [input, setInput] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-const [input ,setInput] = useState(false)
+  const filteredUsers = input
+    ? users.filter((user) =>
+        user.fullName.toLowerCase().includes(input.toLowerCase()),
+      )
+    : users;
 
-const filteredUsers = input ? users.filter((user)=>user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-useEffect(() => {
-  getUser();
-}, []);
-
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div
@@ -41,17 +43,29 @@ useEffect(() => {
               src={assets.menu_icon}
               alt="logo"
               className="max-h-5 cursor-pointer"
+              onClick={() => setShowDropdown(!showDropdown)}
             />
 
-            <div className="absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] border border-b-gray-600 text-gray-100 hidden group-hover:block">
+            <div
+              className={`absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] border border-b-gray-600 text-gray-100 ${showDropdown ? "block" : "hidden"} md:hidden group-hover:block`}
+            >
               <p
-                onClick={() => navigate("/profile")}
+                onClick={() => {
+                  navigate("/profile");
+                  setShowDropdown(false);
+                }}
                 className="cursor-pointer text-sm"
               >
                 Edit Profile
               </p>
               <hr className="my-2 border-t border-gray-500" />
-              <p onClick={() => logout()} className="cursor-pointer text-sm">
+              <p
+                onClick={() => {
+                  logout();
+                  setShowDropdown(false);
+                }}
+                className="cursor-pointer text-sm"
+              >
                 Logout
               </p>
             </div>
@@ -72,7 +86,10 @@ useEffect(() => {
       <div className="flex flex-col">
         {filteredUsers?.map((user, index) => (
           <div
-            onClick={() => {setSelectedUser(user) ; setUnseenMessages((prev) => ({ ...prev ,[user._id]:0}))}}
+            onClick={() => {
+              setSelectedUser(user);
+              setUnseenMessages((prev) => ({ ...prev, [user._id]: 0 }));
+            }}
             key={index}
             className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${selectedUser?._id === user._id && "bg-[#282142]/50"}`}
           >

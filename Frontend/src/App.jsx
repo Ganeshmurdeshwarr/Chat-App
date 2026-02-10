@@ -1,18 +1,16 @@
-import {Navigate, Route, Routes} from "react-router-dom"
-import Login from "./pages/Login"
-import Profile from "./pages/Profile"
-import Home from "./pages/Home"
-import { Toaster } from "react-hot-toast"
-import { useContext } from "react"
-import { AuthContext } from "../context/AuthContext"
-
+import { Navigate, Route, Routes } from "react-router-dom";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import Home from "./pages/Home";
+import { Toaster } from "react-hot-toast";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function App() {
-
- const { authUser } = useContext(AuthContext);
+  const { authUser } = useContext(AuthContext);
   return (
     <>
-      <div className="bg-[url('/bgImage.svg')] bg-contain">
+      <div className="bg-[url('/bgImage.svg')] bg-cover bg-no-repeat bg-center">
         <Toaster />
         <Routes>
           <Route
@@ -33,4 +31,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
