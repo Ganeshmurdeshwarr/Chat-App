@@ -15,35 +15,34 @@ const ChatContainer = () => {
   const scrollEnd = useRef();
 
   // handle sending a message
-  const handleSendMessage = async(e)=>{
-    e.preventDefault()
-    if(input.trim() === "") return null
-    await sendMessage({text:input.trim()})
-    setInput("")
-  }
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (input.trim() === "") return null;
+    await sendMessage({ text: input.trim() });
+    setInput("");
+  };
 
   // Handle sending an image
-  const handleSendImage = async(e)=>{
+  const handleSendImage = async (e) => {
     const file = e.target.files[0];
-    if(!file || !file.type.startsWith("image/")){
-      toast.error("select an image file")
-      return
-    } 
-    const reader = new FileReader()
-
-    reader.onloadend = async()=>{
-      await sendMessage({image : reader.result})
-      e.target.value = ""
+    if (!file || !file.type.startsWith("image/")) {
+      toast.error("select an image file");
+      return;
     }
-    reader.readAsDataURL(file)
-  }
+    const reader = new FileReader();
 
- useEffect(()=>{
-  if(selectedUser){
-    getMessages(selectedUser._id)
-  }
+    reader.onloadend = async () => {
+      await sendMessage({ image: reader.result });
+      e.target.value = "";
+    };
+    reader.readAsDataURL(file);
+  };
 
- },[selectedUser])
+  useEffect(() => {
+    if (selectedUser) {
+      getMessages(selectedUser._id);
+    }
+  }, [selectedUser]);
 
   useEffect(() => {
     if (scrollEnd.current && messages) {
@@ -52,9 +51,9 @@ const ChatContainer = () => {
   }, [messages]);
 
   return selectedUser ? (
-    <div className="h-full overflow-scroll relative backdrop-blur-lg">
+    <div className="h-full flex flex-col relative backdrop-blur-lg">
       {/* Header */}
-      <div className="flex items-center gap-3 py-3 mx-4 border-b border-stone-500">
+      <div className="flex items-center gap-3 py-3 mx-4 border-b border-stone-500 flex-shrink-0">
         <img
           src={selectedUser?.profilePic || assets?.avatar_icon}
           alt="profile"
@@ -81,13 +80,12 @@ const ChatContainer = () => {
       </div>
 
       {/* chat area */}
-      <div className="flex flex-col h-[calc(100%-120px)] overflow-y-scroll p-3 pb-6">
+      <div className="flex-1 overflow-y-auto p-3 pb-6">
         {messages.map((msg, index) => (
           <div
             key={index}
             className={`flex items-center gap-2  ${msg.senderId === authUser._id ? "justify-end" : "justify-start"}`}
           >
-         
             {msg?.image ? (
               <img
                 src={msg?.image}
@@ -122,7 +120,7 @@ const ChatContainer = () => {
       </div>
 
       {/* bottom area */}
-      <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 p-3 ">
+      <div className="flex items-center gap-3 p-3 flex-shrink-0 border-t border-stone-500 bg-gradient-to-t from-black/20">
         <div className="flex-1 flex items-center bg-gray-100/12 px-3 rounded-full ">
           <input
             onChange={(e) => setInput(e.target.value)}
